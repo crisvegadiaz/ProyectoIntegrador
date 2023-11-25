@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,10 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "incidente")
 public class Incidente implements Serializable {
+
+    public enum Estado {
+        Abierto, EnProceso, Cerrado
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +39,9 @@ public class Incidente implements Serializable {
     @JoinColumn(name = "problema_id", nullable = false)
     private Problema problema;
 
-    @Column(name = "estado", nullable = false)
-    private String estado;
+    @Column(name = "estado", nullable = false, columnDefinition = "ENUM('Abierto', 'En Proceso', 'Cerrado')")
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
 
     @Column(name = "creado_en", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,7 +65,7 @@ public class Incidente implements Serializable {
     private Operador operador;
 
     // Constructores
-    public Incidente(int id, Cliente cliente, Servicio servicio, Problema problema, String estado, Date creadoEn, Date actualizadoEn, int tiempoResolucionEstimado, int tiempoResolucionReal, String consideracionesResolucion, Operador operador) {
+    public Incidente(int id, Cliente cliente, Servicio servicio, Problema problema, Estado estado, Date creadoEn, Date actualizadoEn, int tiempoResolucionEstimado, int tiempoResolucionReal, String consideracionesResolucion, Operador operador) {
         this.id = id;
         this.cliente = cliente;
         this.servicio = servicio;
@@ -108,11 +115,11 @@ public class Incidente implements Serializable {
         this.problema = problema;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
