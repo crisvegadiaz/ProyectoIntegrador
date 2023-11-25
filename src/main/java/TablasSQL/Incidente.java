@@ -39,7 +39,7 @@ public class Incidente implements Serializable {
     @JoinColumn(name = "problema_id", nullable = false)
     private Problema problema;
 
-    @Column(name = "estado", nullable = false, columnDefinition = "ENUM('Abierto', 'En Proceso', 'Cerrado')")
+    @Column(name = "estado", nullable = false, columnDefinition = "ENUM('Abierto', 'EnProceso', 'Cerrado')")
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
