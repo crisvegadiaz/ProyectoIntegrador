@@ -2,9 +2,12 @@ package IngresoDeDatos;
 
 import TablasSQL.Cliente;
 import TablasSQL.Especialidad;
+import TablasSQL.Incidente;
 import TablasSQL.Operador;
 import TablasSQL.Problema;
 import TablasSQL.Servicio;
+import TablasSQL.Tipo;
+
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -171,7 +174,7 @@ public class IngresoDatabase {
 
             int idEspecialidadExistente = id;
             Especialidad especialidadExistente = em.find(Especialidad.class, idEspecialidadExistente);
-            
+
             if (especialidadExistente != null) {
                 // Crear una instancia de Especialidad
                 Servicio nuevoServicio = new Servicio();
@@ -201,4 +204,115 @@ public class IngresoDatabase {
         }
     }
 
+    public void ingresoDatosTipo(String nombre, Integer tiempoMaximoResolucion, Integer id, String descripcion) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        // Crear una nueva transacción
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        try {
+
+            int idEspecialidadExistente = id;
+            Especialidad especialidadExistente = em.find(Especialidad.class, idEspecialidadExistente);
+
+            if (especialidadExistente != null) {
+                // Crear una instancia de Especialidad
+                Tipo nuevotipo = new Tipo();
+                nuevotipo.setNombre(nombre);
+                nuevotipo.setTiempoMaximoResolucion(tiempoMaximoResolucion);
+                nuevotipo.setEspecialidad(especialidadExistente);
+                nuevotipo.setDescripcion(descripcion);
+
+                // Persiste el Tipo
+                em.persist(nuevotipo);
+
+                // Realiza el commit de la transacción
+                transaction.commit();
+
+                System.out.println("Tipo guardado con éxito.");
+            } else {
+                System.out.println("Especialidad no encontrada con el ID proporcionado.");
+            }
+        } catch (Exception e) {
+            // Manejo de excepciones
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cierra el EntityManager y EntityManagerFactory
+            em.close();
+            emf.close();
+        }
+    }
+
+    public void ingresoDatosIncidente(Integer idCliente, Integer idServicio, Integer idProblema, Integer idOperador, String estado, Date creadoEn, Date actualizadoEn, Integer tiempoResolucionEstimado, Integer tiempoResolucionReal, String consideraciones) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        // Crear una nueva transacción
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        try {
+
+            // Buscar un Cliente existente por su ID 
+            int idClienteExistente = idCliente;
+            Cliente clienteExistente = em.find(Cliente.class, idClienteExistente);
+
+            // Buscar un Servicio existente por su ID 
+            int idServicioExistente = idServicio;
+            Servicio servicioExistente = em.find(Servicio.class, idServicioExistente);
+
+            // Buscar un Problema existente por su ID 
+            int idProblemaExistente = idProblema;
+            Problema problemaExistente = em.find(Problema.class, idProblemaExistente);
+
+            // Buscar un Operador existente por su ID 
+            int idOperadorExistente = idOperador;
+            Operador operadorExistente = em.find(Operador.class, idOperadorExistente);
+
+            if (!estado.equals("Abierto") && !estado.equals("EnProceso") && !estado.equals("Cerrado")) {
+                System.err.println("El estado solo permite (Abierto, EnProceso, Cerrado)");
+                return;
+            }
+             
+            // Verificar si los elementos existen antes de proceder
+            if (clienteExistente != null && servicioExistente != null && problemaExistente != null && operadorExistente != null) {
+                // Crea una instancia de Incidente
+                Incidente nuevoIncidente = new Incidente();
+                nuevoIncidente.setCliente(clienteExistente);
+                nuevoIncidente.setServicio(servicioExistente);
+                nuevoIncidente.setProblema(problemaExistente);
+                nuevoIncidente.setOperador(operadorExistente);
+                nuevoIncidente.setEstado(Incidente.Estado.valueOf(estado));
+                nuevoIncidente.setCreadoEn(creadoEn);
+                nuevoIncidente.setActualizadoEn(actualizadoEn);
+                nuevoIncidente.setTiempoResolucionEstimado(tiempoResolucionEstimado);
+                nuevoIncidente.setTiempoResolucionReal(tiempoResolucionReal);
+                nuevoIncidente.setConsideracionesResolucion(consideraciones);
+
+                // Persiste el Incidente
+                em.persist(nuevoIncidente);
+
+                // Realiza el commit de la transacción
+                transaction.commit();
+
+                System.out.println("Incidente guardado con éxito.");
+            } else {
+                System.err.println("Cliente, Servicio, Problema o Operador no encontrados con los IDs proporcionados.");
+            }
+        } catch (Exception e) {
+            // Manejo de excepciones
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        } finally {
+            // Cierra el EntityManager y EntityManagerFactory
+            em.close();
+            emf.close();
+        }
+    }
 }
