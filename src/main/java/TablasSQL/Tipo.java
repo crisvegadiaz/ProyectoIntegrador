@@ -18,6 +18,9 @@ public class Tipo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "descripcion", length = 255)
+    private String descripcion;
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
@@ -28,16 +31,17 @@ public class Tipo implements Serializable {
     @JoinColumn(name = "especialidad_id", nullable = false)
     private Especialidad especialidad;
 
-    @Column(name = "descripcion", length = 255)
-    private String descripcion;
+    @Column(name = "tiempo_resolucion_estimado", nullable = false)
+    private int tiempoResolucionEstimado;
 
     // Constructores
-    public Tipo(int id, String nombre, int tiempoMaximoResolucion, Especialidad especialidad, String descripcion) {
+    public Tipo(int id, String descripcion, String nombre, int tiempoMaximoResolucion, Especialidad especialidad, int tiempoResolucionEstimado) {
         this.id = id;
+        this.descripcion = descripcion;
         this.nombre = nombre;
         this.tiempoMaximoResolucion = tiempoMaximoResolucion;
         this.especialidad = especialidad;
-        this.descripcion = descripcion;
+        this.tiempoResolucionEstimado = tiempoResolucionEstimado;
     }
 
     public Tipo() {
@@ -82,6 +86,14 @@ public class Tipo implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getTiempoResolucionEstimado() {
+        return tiempoResolucionEstimado;
+    }
+
+    public void setTiempoResolucionEstimado(int tiempoResolucionEstimado) {
+        this.tiempoResolucionEstimado = tiempoResolucionEstimado;
     }
 
 }

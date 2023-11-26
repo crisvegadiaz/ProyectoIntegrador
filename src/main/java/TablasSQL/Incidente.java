@@ -64,8 +64,12 @@ public class Incidente implements Serializable {
     @JoinColumn(name = "operador_id")
     private Operador operador;
 
+    @ManyToOne
+    @JoinColumn(name = "tipo_id", nullable = false)
+    private Tipo tipo;
+
     // Constructores
-    public Incidente(int id, Cliente cliente, Servicio servicio, Problema problema, Estado estado, Date creadoEn, Date actualizadoEn, int tiempoResolucionEstimado, int tiempoResolucionReal, String consideracionesResolucion, Operador operador) {
+    public Incidente(int id, Cliente cliente, Servicio servicio, Problema problema, Estado estado, Date creadoEn, Date actualizadoEn, int tiempoResolucionEstimado, int tiempoResolucionReal, String consideracionesResolucion, Operador operador, Tipo tipo) {
         this.id = id;
         this.cliente = cliente;
         this.servicio = servicio;
@@ -77,6 +81,7 @@ public class Incidente implements Serializable {
         this.tiempoResolucionReal = tiempoResolucionReal;
         this.consideracionesResolucion = consideracionesResolucion;
         this.operador = operador;
+        this.tipo = tipo;
     }
 
     public Incidente() {
@@ -169,6 +174,14 @@ public class Incidente implements Serializable {
 
     public void setOperador(Operador operador) {
         this.operador = operador;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
 
 }

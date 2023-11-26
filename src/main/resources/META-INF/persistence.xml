@@ -9,6 +9,7 @@
     <class>TablasSQL.Problema</class>
     <class>TablasSQL.Servicio</class>
     <class>TablasSQL.Tipo</class>
+    <class>TablasSQL.ServicioProblemaRelacion</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:8080/proyecto_integrador?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
