@@ -3,6 +3,8 @@ package TablasSQL;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "operador")
 public class Operador implements Serializable {
+
+    public enum Preferido {
+        Email, WhatsApp
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +28,21 @@ public class Operador implements Serializable {
     @Column(name = "correo_electronico", nullable = false)
     private String correoElectronico;
 
-    @Column(name = "metodo_preferido_notificacion")
-    private String metodoPreferidoNotificacion;
+    @Column(name = "whatsApp", nullable = false)
+    private String whatsApp;
+
+    @Column(name = "metodo_preferido_notificacion", nullable = false, columnDefinition = "ENUM('Email', 'WhatsApp')")
+    @Enumerated(EnumType.STRING)
+    private Preferido metodoPreferidoNotificacion;
 
     // Constructores
-    public Operador(int id, String nombre, String correoElectronico, String metodoPreferidoNotificacion) {
+    public Operador(int id, String nombre, String correoElectronico, String whatsApp, Preferido metodoPreferidoNotificacion) {
         this.id = id;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
+        this.whatsApp = whatsApp;
         this.metodoPreferidoNotificacion = metodoPreferidoNotificacion;
+
     }
 
     public Operador() {
@@ -61,11 +73,19 @@ public class Operador implements Serializable {
         this.correoElectronico = correoElectronico;
     }
 
-    public String getMetodoPreferidoNotificacion() {
+    public String getWhatsApp() {
+        return whatsApp;
+    }
+
+    public void setWhatsApp(String whatsApp) {
+        this.whatsApp = whatsApp;
+    }
+
+    public Preferido getMetodoPreferidoNotificacion() {
         return metodoPreferidoNotificacion;
     }
 
-    public void setMetodoPreferidoNotificacion(String metodoPreferidoNotificacion) {
+    public void setMetodoPreferidoNotificacion(Preferido metodoPreferidoNotificacion) {
         this.metodoPreferidoNotificacion = metodoPreferidoNotificacion;
     }
 

@@ -94,7 +94,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatosOperador(String nombre, String email, String metodoPreferido) {
+    public void ingresoDatosOperador(String nombre, String email, String whatsApp, String metodoPreferido) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -102,12 +102,18 @@ public class IngresoDatabase {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
 
+        if (!metodoPreferido.equals("Email") && !metodoPreferido.equals("WhatsApp")) {
+            System.err.println("El Metodo Preferido Notificacion solo permite ( Email, WhatsApp )");
+            return;
+        }
+
         try {
             // Crear una instancia de Especialidad
             Operador nuevaOperador = new Operador();
             nuevaOperador.setNombre(nombre);
             nuevaOperador.setCorreoElectronico(email);
-            nuevaOperador.setMetodoPreferidoNotificacion(metodoPreferido);
+            nuevaOperador.setWhatsApp(whatsApp);
+            nuevaOperador.setMetodoPreferidoNotificacion(Operador.Preferido.valueOf(metodoPreferido));
 
             // Persistir la nueva especialidad
             em.persist(nuevaOperador);
@@ -189,7 +195,7 @@ public class IngresoDatabase {
 
                 System.out.println("Especialidad guardada con éxito.");
             } else {
-                System.out.println("Especialidad no encontrada con el ID proporcionado.");
+                System.err.println("Especialidad no encontrada con el ID proporcionado.");
             }
 
         } catch (Exception e) {
@@ -233,7 +239,7 @@ public class IngresoDatabase {
 
                 System.out.println("Tipo guardado con éxito.");
             } else {
-                System.out.println("Especialidad no encontrada con el ID proporcionado.");
+                System.err.println("Especialidad no encontrada con el ID proporcionado.");
             }
         } catch (Exception e) {
             // Manejo de excepciones
@@ -278,7 +284,7 @@ public class IngresoDatabase {
                 System.err.println("El estado solo permite (Abierto, EnProceso, Cerrado)");
                 return;
             }
-             
+
             // Verificar si los elementos existen antes de proceder
             if (clienteExistente != null && servicioExistente != null && problemaExistente != null && operadorExistente != null) {
                 // Crea una instancia de Incidente
