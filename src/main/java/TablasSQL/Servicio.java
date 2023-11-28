@@ -60,4 +60,9 @@ public class Servicio implements Serializable {
         this.especialidad = especialidad;
     }
 
+    @Override
+    public String toString() {
+        return "Servicio{" + "id=" + id + ", nombre=" + nombre + ", especialidad=" + especialidad + '}';
+    }
+
 }

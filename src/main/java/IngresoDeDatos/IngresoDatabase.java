@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class IngresoDatabase {
 
@@ -23,7 +24,8 @@ public class IngresoDatabase {
         this.conexionDatabase = nombreConexion;
     }
 
-    public void ingresoDatoCliente(String nombre, String cuit, String direccion, String email, String telefono) {
+    // Create de Datos
+    public void createCliente(String nombre, String cuit, String direccion, String email, String telefono) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
@@ -61,7 +63,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoEspecialidad(String especialidad, String descripcion) {
+    public void createEspecialidad(String especialidad, String descripcion) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
@@ -95,7 +97,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoOperador(String nombre, String email, String whatsApp, String metodoPreferido) {
+    public void createOperador(String nombre, String email, String whatsApp, String metodoPreferido) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -136,7 +138,7 @@ public class IngresoDatabase {
 
     }
 
-    public void ingresoDatoProblema(Integer gravedad, String descripcion) {
+    public void createProblema(Integer gravedad, String descripcion) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -169,7 +171,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoServicio(String nombre, Integer idEspecialidad) {
+    public void createServicio(String nombre, Integer idEspecialidad) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -211,7 +213,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoTipo(Integer idEspecialidad, String nombre, Integer tiempoMaximoResolucion, String descripcion, Integer tiempoResolucionEstimado) {
+    public void createTipo(Integer idEspecialidad, String nombre, Integer tiempoMaximoResolucion, String descripcion, Integer tiempoResolucionEstimado) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -257,7 +259,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoIncidente(Integer idCliente, Integer idServicio, Integer idProblema, Integer idTipo, Integer idOperador, String estado, Date creadoEn, Date actualizadoEn, Integer tiempoResolucionEstimado, Integer tiempoResolucionReal, String consideraciones) {
+    public void createIncidente(Integer idCliente, Integer idServicio, Integer idProblema, Integer idTipo, Integer idOperador, String estado, Date creadoEn, Date actualizadoEn, Integer tiempoResolucionEstimado, Integer tiempoResolucionReal, String consideraciones) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -330,7 +332,7 @@ public class IngresoDatabase {
         }
     }
 
-    public void ingresoDatoServicioProblemaRelacion(Integer idProblema, Integer idServicio) {
+    public void createServicioProblemaRelacion(Integer idProblema, Integer idServicio) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
         EntityManager em = emf.createEntityManager();
 
@@ -376,4 +378,99 @@ public class IngresoDatabase {
             emf.close();
         }
     }
+
+    // Update Datos
+    public void updateCliente(Integer IdCliente, String nombre, String cuit, String direccion, String email, String telefono) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+
+        Cliente clienteToUpdate = em.find(Cliente.class, IdCliente);
+
+        clienteToUpdate.setNombre(nombre);
+        clienteToUpdate.setCuit(cuit);
+        clienteToUpdate.setDireccion(direccion);
+        clienteToUpdate.setCorreoElectronico(email);
+        clienteToUpdate.setTelefono(telefono);
+        clienteToUpdate.setFechaInicioContrato(new Date());
+
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+
+    public void updateCliente(Integer idCliente, String campo, String nuevoValor) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyecto_integrador");
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+
+        String jpql = "UPDATE Cliente c SET c." + campo + " = :nuevoValor WHERE c.id = :idCliente";
+
+        Query query = em.createQuery(jpql);
+        query.setParameter("nuevoValor", nuevoValor);
+        query.setParameter("idCliente", idCliente);
+
+        int filasActualizadas = query.executeUpdate();
+
+        em.getTransaction().commit();
+
+        System.out.println("Se actualizaron " + filasActualizadas + " filas.");
+
+        em.close();
+    }
+
+    public void updateEspecialidad(Integer IdEspecialidad, String especialidad, String descripcion) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+
+        Especialidad EspecialidadToUpdate = em.find(Especialidad.class, IdEspecialidad);
+
+        EspecialidadToUpdate.setNombre(especialidad);
+        EspecialidadToUpdate.setDescripcion(descripcion);
+
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+
+    // Delete Datos
+    public void deleteCliente(Integer idCliente) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+
+        Cliente clienteToDelete = em.find(Cliente.class, idCliente);
+
+        em.remove(clienteToDelete);
+
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+
+    public void deleteEspecialidad(Integer idEspecialidad) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(this.conexionDatabase);
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+
+        Especialidad especialidadToDelete = em.find(Especialidad.class, idEspecialidad);
+
+        em.remove(especialidadToDelete);
+
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
+    }
+
 }

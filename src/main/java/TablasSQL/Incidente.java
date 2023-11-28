@@ -184,4 +184,8 @@ public class Incidente implements Serializable {
         this.tipo = tipo;
     }
 
+    @Override
+    public String toString() {
+        return "Incidente{" + "id=" + id + ", cliente=" + cliente + ", servicio=" + servicio + ", problema=" + problema + ", estado=" + estado + ", creadoEn=" + creadoEn + ", actualizadoEn=" + actualizadoEn + ", tiempoResolucionEstimado=" + tiempoResolucionEstimado + ", tiempoResolucionReal=" + tiempoResolucionReal + ", consideracionesResolucion=" + consideracionesResolucion + ", operador=" + operador + ", tipo=" + tipo + '}';
+    }    
 }

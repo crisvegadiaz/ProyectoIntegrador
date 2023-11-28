@@ -110,4 +110,13 @@ public class Cliente implements Serializable {
         this.fechaInicioContrato = fechaInicioContrato;
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", cuit=" + cuit + ", direccion=" + direccion + ", telefono=" + telefono + ", correoElectronico=" + correoElectronico + ", fechaInicioContrato=" + fechaInicioContrato + '}';
+    }
+
+    public void valueOf(String update) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

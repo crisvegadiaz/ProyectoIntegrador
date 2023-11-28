@@ -89,4 +89,9 @@ public class Operador implements Serializable {
         this.metodoPreferidoNotificacion = metodoPreferidoNotificacion;
     }
 
+    @Override
+    public String toString() {
+        return "Operador{" + "id=" + id + ", nombre=" + nombre + ", correoElectronico=" + correoElectronico + ", whatsApp=" + whatsApp + ", metodoPreferidoNotificacion=" + metodoPreferidoNotificacion + '}';
+    }
+
 }

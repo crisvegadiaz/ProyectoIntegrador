@@ -96,4 +96,8 @@ public class Tipo implements Serializable {
         this.tiempoResolucionEstimado = tiempoResolucionEstimado;
     }
 
+    @Override
+    public String toString() {
+        return "Tipo{" + "id=" + id + ", descripcion=" + descripcion + ", nombre=" + nombre + ", tiempoMaximoResolucion=" + tiempoMaximoResolucion + ", especialidad=" + especialidad + ", tiempoResolucionEstimado=" + tiempoResolucionEstimado + '}';
+    }
 }

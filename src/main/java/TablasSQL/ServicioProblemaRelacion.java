@@ -43,4 +43,8 @@ public class ServicioProblemaRelacion implements Serializable {
         this.problema = problema;
     }
 
+    @Override
+    public String toString() {
+        return "ServicioProblemaRelacion{" + "servicio=" + servicio + ", problema=" + problema + '}';
+    }
 }

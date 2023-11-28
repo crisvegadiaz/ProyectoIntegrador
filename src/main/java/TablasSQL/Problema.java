@@ -57,4 +57,9 @@ public class Problema implements Serializable {
         this.gravedad = gravedad;
     }
 
+    @Override
+    public String toString() {
+        return "Problema{" + "id=" + id + ", descripcion=" + descripcion + ", gravedad=" + gravedad + '}';
+    }
+
 }
