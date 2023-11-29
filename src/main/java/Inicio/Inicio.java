@@ -7,7 +7,5 @@ public class Inicio {
 
     public static void main(String[] args) {
         IngresoDatabase ingresoDB = new IngresoDatabase("proyecto_integrador");
-        
-        ingresoDB.updateEspecialidad(10, "lalala", "lalala");
     }
 }
